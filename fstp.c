@@ -18,23 +18,35 @@ static NUM_BLOC get_numero_logique (NUM_BLOC numRel, INOEUD_OCCUPE
 				    *inoeud)  
 /* traduit le numero relatif en numero logique */
 {
-  VOL_BLOC b;
-  VOL_BLOC bb;
+  BLOC b;
+  BLOC bb;
   int q,r;
   
   if(numRel < NB_BLOCS_DIRECTS)
     {
-      return (inoeud)->direct[numRel];
+      return inoeud->direct[numRel];
     }  
   numRel -= NB_BLOCS_DIRECTS;
   
   if(numRel < NUMEROS_PAR_BLOC)
     {
-      vol_lire(inoeud->indirect,b);
+      vol_lire(inoeud->indirect,b.opaque);
       return b[numRel];
     }
   numRel -= NUMEROS_PAR_BLOC;
   
+  if(numRel>NUMEROS_PAR_BLOC*NUMEROS_PAR_BLOC)
+    {
+      return NUM_NULL;
+    }
+
+  q = numRel / NUMEROS_PAR_BLOCS;
+  r = numRel % NUMEROS_PAR_BLOCS;
+
+  vol_lire(inoeud->double_indirect, b.opaque);
+  vol_lire(b.blocs[q], bb.opaque);
+  return bb.blocs[r];
+
   return NUM_NULL;
 }
 
