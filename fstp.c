@@ -18,7 +18,24 @@ static NUM_BLOC get_numero_logique (NUM_BLOC numRel, INOEUD_OCCUPE
 				    *inoeud)  
 /* traduit le numero relatif en numero logique */
 {
-  return NUM_NULL ;
+  VOL_BLOC b;
+  VOL_BLOC bb;
+  int q,r;
+  
+  if(numRel < NB_BLOCS_DIRECTS)
+    {
+      return (inoeud)->direct[numRel];
+    }  
+  numRel -= NB_BLOCS_DIRECTS;
+  
+  if(numRel < NUMEROS_PAR_BLOC)
+    {
+      vol_lire(inoeud->indirect,b);
+      return b[numRel];
+    }
+  numRel -= NUMEROS_PAR_BLOC;
+  
+  return NUM_NULL;
 }
 
 int lire_bloc (INOMBRE i_nombre, BLOC *b, NUM_BLOC numRel)
@@ -29,7 +46,25 @@ int lire_bloc (INOMBRE i_nombre, BLOC *b, NUM_BLOC numRel)
  *  mise a zero et tout se passe normalement. */
 /* Renvoie le nombre d'octets significatifs lus ou -1 si erreur. */ 
 
-{
+{/*
+  NUM_BLOC numLog;
+  INOMBRE i_nombre;
+  INOEUD *inoeud;
+  int nb_octetsLu;
+ */
+  /* On nous fournit un INOMBRE, on doit instancier dans b l'adresse du bloc de numero relatif numRel */ 
+  /*
+  if(lire_inoeud(i_nombre, inoeud)) 
+    {
+      
+    }
+  else
+    {
+      //erreur
+    }
+  numLog = get_numero_logique(numRel, b);
+  */
+  
   bzero (b, BLOC_SIZE) ; 
   return BLOC_SIZE ; 
 }
